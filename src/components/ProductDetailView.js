@@ -16,6 +16,9 @@ class ProductDetailView extends Component {
       //   "price": 30000
       // },
     ],
+    // 장바구니 항목 추가 시 호출되는 함수
+    // 옵션 id와 수량을 인수로 넘겨야 함
+    onCreateCartItem: () => {},
   };
   constructor(props) {
     super(props);
@@ -24,7 +27,7 @@ class ProductDetailView extends Component {
       // 가격을 표시하기 위해서 수량과 optionId를 저장
       // 장바구니 전송할 때 optionId가 필요하므로 price가 아닌 optionId를 저장
       quantity: 1,
-      selectedOptionId: null,
+      selectedOptionId: '',
     };
   }
 
@@ -54,13 +57,20 @@ class ProductDetailView extends Component {
     const { quantity, selectedOptionId } = this.state;
 
     const selectedOption = options.find(o => o.id === selectedOptionId);
+
+    // selectedOption가 undefined이면 -> falsy이므로 && 왼쪽의 undefiened를 반환
+    // selectedOption에 값이 들어있으면 -> truthy이므로 && 오른쪽의 selectedOption.price * quantity를 반환
     const totalPrice = selectedOption && selectedOption.price * quantity;
     return (
       <div>
         <select
           value={selectedOptionId}
           onChange={e => this.handleOptionChange(e)}
+          required
         >
+          <option disabled value="">
+            옵션을 선택하세요
+          </option>
           {options.map(o => (
             <option key={o.id} value={o.id}>
               {o.title}
@@ -69,13 +79,28 @@ class ProductDetailView extends Component {
         </select>
         <input
           value={quantity}
-          type="number"
-          // 입력가능한 값의 범위
+          type="number" // 입력가능한 값의 범위
           min="1"
           max="10"
           onChange={e => this.handleQuantityChange(e)}
         />
         <div>가격: {totalPrice}</div>
+        {/* selectedOptionId가 ''일 때,quantity가 0이하일 때  */}
+
+        <button
+          onClick={() => {
+            const { selectedOptionId, quantity } = this.state;
+            if (selectedOptionId === '') {
+              alert('옵션을 선택하세요.');
+            } else if (quantity < 1) {
+              alert('1 이상의 수량을 입력하세요.');
+            } else {
+              this.props.onCreateCartItem(selectedOptionId, quantity);
+            }
+          }}
+        >
+          장바구니에 담기
+        </button>
         <div>{id}</div>
         <div>{title}</div>
         <div>{description}</div>

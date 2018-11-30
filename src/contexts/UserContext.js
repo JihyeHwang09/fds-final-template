@@ -7,7 +7,8 @@ const { Provider, Consumer } = React.createContext();
 export default class UserProvider extends Component {
   constructor(props) {
     super(props);
-
+    // loginForm Container에서 이 정보를 받아쓸 수 있다
+    //  -> loginForm Container를 withUser로 감싸?export default withUser(LoginForm);
     this.state = {
       id: null,
       username: null,

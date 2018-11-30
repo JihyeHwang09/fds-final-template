@@ -42,6 +42,15 @@ export default class ProductDetail extends Component {
     });
   }
 
+  // 서버측 장바구니에 항목을 추가하는 함수
+  //  handleCreateCartItem을 화살표 함수로 만들어서 this를 고정 시키면,
+  // 아래쪽에서 bind를 해 필요가 x
+  // 다른 컴포넌트에 넘겨야 하거나 이벤트 리스너로 등록해야하는 함수는 화살표 함수로 만들면,
+  // this가 고정되서 그 이후 코드들이 깔끔해진다.
+  handleCreateCartItem = async (optionId, quantity) => {
+    //...
+    alert(`장바구니 테스트, ${optionId}, ${quantity}`);
+  };
   render() {
     // const product = {
     //   id: 1,
@@ -53,7 +62,11 @@ export default class ProductDetail extends Component {
     return (
       <div>
         {/* container 상태와 p.c 상태와 같으면, 이렇게 ...this.state로 상태를 다 내려보내줄 수 있다 */}
-        <ProductDetailView {...this.state} />
+        {/* this를 고정시켜서 내리기만 하면 여러가지 방법을 사용할 수 있다 */}
+        <ProductDetailView
+          onCreateCartItem={this.handleCreateCartItem}
+          {...this.state}
+        />
       </div>
     );
   }
