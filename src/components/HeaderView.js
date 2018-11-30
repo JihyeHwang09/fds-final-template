@@ -1,20 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-export default class HeaderView extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      logoutSuccess: false,
-    };
-  }
+export default class HeaderView extends Component {
   render() {
     // withUser로 감싸져 있는 logout함수를 받을 수 있다
-    const { username, logout } = this.props;
-    const { logoutSuccess } = this.state;
-    if (logoutSuccess) {
-      return <Redirect to="/" />;
-    }
+    const { username, logout, history } = this.props;
+
     return (
       <div>
         <Link to="/">쇼핑몰</Link>
@@ -25,9 +16,7 @@ export default class HeaderView extends Component {
             <button
               onClick={() => {
                 logout();
-                this.setState({
-                  logoutSuccess: true,
-                });
+                history.push('/');
               }}
             >
               로그아웃
