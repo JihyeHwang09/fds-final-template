@@ -5,7 +5,7 @@ export default class LoginFormView extends Component {
     super(props);
 
     this.state = {
-      uername: '',
+      username: '',
       password: '',
       success: false,
       //로그인에 성공하면,  sucess를 true를 바꿔주고 Redirect를 호출
